@@ -1,14 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define MEMORY_SIZE 30000
-#define SOURCE_SIZE 10000
-
-char memory[MEMORY_SIZE] = {0};
-char source[SOURCE_SIZE] = {0};
-char instructions[SOURCE_SIZE] = {0};
-char *src = source;
-char *mem = memory;
-char *instr = instructions;
+char *memory; char *mem;
+char *source; char *src;
+char *instructions; char *instr; // same size as source
 size_t command = 0;
 size_t loop = 0;
 
@@ -35,49 +31,50 @@ void shi()
                 break;
             default: msg("Nice try...\n"); break;
         }
-        src++;
+        src++; // next char
     }
 
     instr = instructions; // move back to 1 instruction
-    while (*instr)
+    while (*instr) // run numeric instructions
     {
         switch (*instr)
         {
-            case 1: mem++; break;
-            case 2: mem--; break;
-            case 3: ++*mem; break;
-            case 4: --*mem; break;
-            case 5: fputc(*mem, stdout); break;
-            case 6: scanf(" %c", mem); break;
-            case 7: 
+            case 1: mem++; break; // increase memory pointer
+            case 2: mem--; break; // decrease memory pointer
+            case 3: ++*mem; break; // increase value at memory pointer
+            case 4: --*mem; break; // decrease value at memory pointer
+            case 5: fputc(*mem, stdout); break; // print value at memory pointer as char
+            case 6: scanf(" %c", mem); break; // read char from user
+            case 7: // beginning of loop
                 if (*mem) break; // if not 0
                 loop = 1;
                 while (loop)
                 {
-                    instr++;
-                    if (*instr == 7) loop++;
-                    if (*instr == 8) loop--;
+                    instr++; // increase instruction pointer
+                    if (*instr == 7) loop++; // entered loop
+                    if (*instr == 8) loop--; // left loop
                 }
                 break;
-            case 8: 
+            case 8: // end of loop
                 loop = 1;
                 while (loop)
                 {
-                    instr--;
-                    if (*instr == 7) loop--;
-                    if (*instr == 8) loop++;
+                    instr--; // decrease instruction pointer
+                    if (*instr == 7) loop--; // entered loop
+                    if (*instr == 8) loop++; // left loop
                 }
-                instr--;
+                instr--; // decrease instruction pointer because it gets increased at the end of the loop
                 break;
         }
 
-        instr++;
+        instr++; // increase instruction pointer
     }
 }
 
 
 int main(int argc, char *argv[])
-{   
+{
+    // Read file
     if(argc == 2)
     {
         FILE *file = fopen(argv[1], "r");
@@ -87,8 +84,19 @@ int main(int argc, char *argv[])
             printf("Bruh don't give that NULL shit...\n");
             return 0;
         }
+        
+        fseek(file, 0, SEEK_END); // seek to end of file
+        size_t size = ftell(file); // get current file pointer
+        fseek(file, 0, SEEK_SET); // seek back to beginning of file
 
-        fread(source, 1, SOURCE_SIZE, file);
+        source = (char*)calloc(size, sizeof(char));
+        src = source;
+        instructions = (char*)calloc(size, sizeof(char));
+        instr = instructions;
+        memory = (char*)calloc(size*2, sizeof(char));
+        mem = memory;
+
+        fread(source, 1, size, file);
         fclose(file);
         shi();
     }
