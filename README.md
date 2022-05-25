@@ -1,5 +1,5 @@
 # Shi
- Welcome to my very own programming language... <br /> 
+ Welcome to my very own programming language... (Heavily inspired by BrainF**k)<br /> 
  Even if it is a joke it can do basically every task you can imagine ( given enough time/memory :] ). <br /> 
  With that said, lets get started <br /> 
 
