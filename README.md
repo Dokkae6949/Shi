@@ -20,7 +20,7 @@ ALL INSTRUCTIONS MUST END WITH A "SPACE" OR A "NEW LINE"
 
 ## Example Programm
 This programm will run a loop
-which subtract 1 from the current cell
+which subtracts 1 from the current cell
 untill the cell contains a 0 
 ```c
 ''''''' '''' ''''''''
