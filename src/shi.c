@@ -5,7 +5,6 @@
 char *memory; char *mem;
 char *source; char *src;
 char *instructions; char *instr; // same size as source
-size_t loop = 0;
 
 void msg(char *msg)
 {
@@ -33,7 +32,8 @@ void shi()
         }
         src++; // next char
     }
-
+    
+    size_t loop = 0;
     instr = instructions; // move back to 1 instruction
     while (*instr) // run numeric instructions
     {
