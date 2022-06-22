@@ -5,7 +5,6 @@
 char *memory; char *mem;
 char *source; char *src;
 char *instructions; char *instr; // same size as source
-size_t command = 0;
 size_t loop = 0;
 
 void msg(char *msg)
@@ -16,6 +15,7 @@ void msg(char *msg)
 void shi()
 {
     // Convert into numeric instructions
+    size_t command = 0;
     while (*src)
     {
         switch (*src)
